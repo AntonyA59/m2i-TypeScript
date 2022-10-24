@@ -1,6 +1,8 @@
 {
   "include": ["ts/*.ts"],
   "compilerOptions": {
-    "outDir": "js/"
+    "outDir": "js/",
+    "target": "ES6",
+    "strict": true
   }
 }
