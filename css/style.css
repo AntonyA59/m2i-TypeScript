@@ -1,16 +1,42 @@
-body {
+body{
+    background: #f2d2a9;
+}
+
+.container{
+    margin: 10%;
+    width: 80%;
     text-align: center;
 }
 
-#compteur {
-    font-size: 3em;
-    margin-top: 5em;
-    margin-bottom: 1em;
+#buttons button img, #resultat img{
+    min-width: 100px;
+    min-height: 100px;
+    max-height: 150px;
+    max-width: 150px;
 }
 
-button {
-    background-color: antiquewhite;
-    font-size: 1.5em;
-    border-radius: 10px;
-    padding: 0.5em;
+.win{
+    color: green;
+}
+
+.lose{
+    color:firebrick;
+}
+
+.draw{
+    color:peru;
+}
+
+#buttons button{
+    margin-left: 20px;
+    margin-right: 20px;
+    background: none;
+    border: none;
+    padding: 0px;
+    box-sizing: border-box;
+    border: transparent solid 2px;
+}
+
+#buttons button:hover{
+    border: white solid 2px;
 }

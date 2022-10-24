@@ -1,18 +1,39 @@
 <!DOCTYPE html>
-<html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TypeScript</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script defer src="js/script.js"></script>
-</head>
-
-<body>
-    <div id="compteur">0</div>
-    <button type="button" id="btn">Click</button>
-</body>
-
+<html>
+    <head>
+        <title>Pierre, Feuille, Ciseaux !</title>
+        <link type="text/css" rel="stylesheet" href="css/bootstrap-reboot.min.css" />
+        <link type="text/css" rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div id="score">
+                <h3>Score</h3>
+                <p>
+                    <span id="player1Score"></span>
+                    -
+                    <span id="player2Score"></span>
+                </p>
+                
+            </div>
+            <div id="buttons">
+                <button type="button" id="bPierre">
+                    <img src="img/rock.svg" />
+                </button>
+                <button type="button" id="bFeuille">
+                    <img src="img/paper.svg" />
+                </button>
+                <button type="button" id="bCiseaux">
+                    <img src="img/scissors.svg" />
+                </button>
+            </div>
+            <p>
+                A vous de jouer !
+            </p>
+            <div id="resultat">
+                
+            </div>
+        </div>
+        <script src="js/game.js"></script>
+    </body>
 </html>
