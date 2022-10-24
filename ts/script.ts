@@ -23,10 +23,10 @@ const imgJ2 = document.createElement("img");
 const pResult = document.createElement("p");
 
 const imgs = ["img/rock.svg", "img/paper.svg", "img/scissors.svg"];
-let partie1: Partie = new Partie();
-updateScore(partie1);
+let partie: Partie = new Partie();
 
-let play = function (partie: Partie) {
+let play = function (choice: number) {
+  partie.j1 = choice;
   partie.j2 = Math.ceil(Math.random() * 3);
   if (resultat) {
     resultat.innerHTML = "";
@@ -59,13 +59,13 @@ let play = function (partie: Partie) {
 };
 
 pierre.addEventListener("click", function () {
-  play(partie1);
+  play(1);
 });
 feuille.addEventListener("click", function () {
-  play(partie1);
+  play(2);
 });
 ciseaux.addEventListener("click", function () {
-  play(partie1);
+  play(3);
 });
 
 function updateScore(partie: Partie) {
