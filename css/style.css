@@ -1,16 +1,51 @@
 body {
+    font-family: Helvetica, Arial, sans-serif;
+    animation: color-change-3x 4s linear infinite alternate both;
+    background-image: url(/image/dog.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+select{
+    border: 2px groove #824208;
+    border-radius: 10px;  
+    width: 10%;
+    margin: auto 10px;
+    padding: 10px 10px;
+    text-decoration: none;
+    color: #000000;
+}
+
+
+.btn-link{
+    border: 2px groove #824208;
+    border-radius: 40px;  
+    width: 20%;
+    margin: auto 10px;
+    padding: 10px 10px;
+    text-decoration: none;
+    color: #000000;
+    background: linear-gradient(to right, #6ACE52 0%, #2DC507 100%);
+}
+
+
+.content{
+    background: linear-gradient(to right, #ffcda2bb 0%, #e9a366bb 100%);
+    font-size: larger;
+    padding: 20px;
+    margin: 2rem auto;
+    border: 5px groove #82430896;
+    border-radius: 20px;
+    box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
     text-align: center;
+    width: 50%;
+
 }
 
-#compteur {
-    font-size: 3em;
-    margin-top: 5em;
-    margin-bottom: 1em;
+.green{
+    color: green;
 }
 
-button {
-    background-color: antiquewhite;
-    font-size: 1.5em;
-    border-radius: 10px;
-    padding: 0.5em;
+.red{
+    color: red;
 }
