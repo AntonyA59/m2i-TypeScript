@@ -7,9 +7,33 @@ class Partie {
   j1: number = 0;
   j2: number = 0;
 
-  play(choice: number) {
+  play(choice: number, manager: Manager) {
     this.j1 = choice;
     this.j2 = Math.ceil(Math.random() * 3);
+    if (manager.resultat) {
+      manager.resultat.innerHTML = "";
+      manager.pResult.className = "";
+      manager.imgJ1.src = manager.imgs[manager.partie.j1 - 1];
+      manager.imgJ2.src = manager.imgs[manager.partie.j2 - 1];
+      manager.resultat.appendChild(manager.imgJ1);
+      manager.resultat.append(" - ");
+      manager.resultat.appendChild(manager.imgJ2);
+
+      if (
+        (manager.partie.j1 == 1 && manager.partie.j2 == 3) ||
+        (manager.partie.j1 == 2 && manager.partie.j2 == 1) ||
+        (manager.partie.j1 == 3 && manager.partie.j2 == 2)
+      ) {
+        manager.partie.scores.scoreJ1++;
+        manager.afficherMessageResultat("win", "Gagné");
+      } else if (manager.partie.j1 == manager.partie.j2) {
+        manager.afficherMessageResultat("draw", "Egalité");
+      } else {
+        manager.partie.scores.scoreJ2++;
+        manager.afficherMessageResultat("lose", "Perdu !");
+      }
+      manager.resultat.appendChild(manager.pResult);
+    }
   }
 }
 
@@ -33,7 +57,6 @@ class Manager {
   imgJ2 = document.createElement("img");
 
   pResult = document.createElement("p");
-  pFinalResult = document.createElement("p");
 
   imgs = ["img/rock.svg", "img/paper.svg", "img/scissors.svg"];
 
@@ -44,65 +67,38 @@ class Manager {
 
   handleClick() {
     this.pierre.addEventListener("click", () => {
-      this.partie.play(1);
+      this.partie.play(1, this);
       this.event();
     });
     this.feuille.addEventListener("click", () => {
-      this.partie.play(2);
-      this.event;
+      this.partie.play(2, this);
+      this.event();
     });
     this.ciseaux.addEventListener("click", () => {
-      this.partie.play(3);
+      this.partie.play(3, this);
       this.event();
     });
   }
 
+  afficherMessageResultat(classname: string, text: string) {
+    manager.pResult.classList.add(classname);
+    manager.pResult.innerText = text;
+  }
   event() {
     this.tour++;
-    this.result();
     this.updateScore(this.partie);
     if (this.tour >= this.nbrTour) {
-      if (this.partie.j1 > this.partie.j2) {
-        this.pResult.innerText = "Bravo vous avez gagné !";
-      } else if (this.partie.j1 === this.partie.j2) {
-        this.pResult.innerText = "Draw!";
+      if (this.partie.scores.scoreJ1 > this.partie.scores.scoreJ2) {
+        this.afficherMessageResultat("win", "Bravo vous avez gagné !");
+      } else if (this.partie.scores.scoreJ1 === this.partie.scores.scoreJ2) {
+        this.afficherMessageResultat("draw", "Draw!");
       } else {
-        this.pResult.innerText = "Dommage Vous avez perdu !";
+        this.afficherMessageResultat("lose", "Dommage Vous avez perdu !");
       }
       this.parties.push(this.partie);
       this.addhistory();
       this.tour = 0;
       this.resetScore();
-      this.resultat.appendChild(this.pFinalResult);
-    }
-  }
-
-  result() {
-    if (this.resultat) {
-      this.resultat.innerHTML = "";
-      this.pResult.className = "";
-      this.imgJ1.src = this.imgs[this.partie.j1 - 1];
-      this.imgJ2.src = this.imgs[this.partie.j2 - 1];
-      this.resultat.appendChild(this.imgJ1);
-      this.resultat.append(" - ");
-      this.resultat.appendChild(this.imgJ2);
-
-      if (
-        (this.partie.j1 == 1 && this.partie.j2 == 3) ||
-        (this.partie.j1 == 2 && this.partie.j2 == 1) ||
-        (this.partie.j1 == 3 && this.partie.j2 == 2)
-      ) {
-        this.partie.scores.scoreJ1++;
-        this.pResult.classList.add("win");
-        this.pResult.innerText = "Gagné !";
-      } else if (this.partie.j1 == this.partie.j2) {
-        this.pResult.classList.add("draw");
-        this.pResult.innerText = "Egalité !";
-      } else {
-        this.partie.scores.scoreJ2++;
-        this.pResult.classList.add("lose");
-        this.pResult.innerText = "Perdu !";
-      }
       this.resultat.appendChild(this.pResult);
     }
   }
@@ -110,11 +106,22 @@ class Manager {
   addhistory() {
     const pHistory = document.createElement("p");
     this.parties.forEach((element) => {
+      let text = "";
+      if (this.partie.scores.scoreJ1 > this.partie.scores.scoreJ2) {
+        text = "Gagné";
+      } else if (this.partie.scores.scoreJ1 === this.partie.scores.scoreJ2) {
+        text = "Egalité";
+      } else {
+        text = "Perdue";
+      }
+
       pHistory.innerText =
         "Joueur " +
         element.scores.scoreJ1 +
         " - Ordinateur " +
-        element.scores.scoreJ2;
+        element.scores.scoreJ2 +
+        " | " +
+        text;
     });
     this.historique.appendChild(pHistory);
   }
