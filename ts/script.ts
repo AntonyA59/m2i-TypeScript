@@ -46,6 +46,7 @@ class Manager {
   resultat = document.getElementById("resultat")!;
   historique = document.getElementById("historique")!;
 
+  nbrTourHtml = document.getElementById("tour")!;
   imgJ1 = document.createElement("img");
   imgJ2 = document.createElement("img");
 
@@ -89,6 +90,7 @@ class Manager {
   }
   event() {
     this.tour++;
+    this.nbrTourHtml.innerHTML = "Tour " + this.tour + " / " + this.nbrTour;
     this.updateScore(this.partie);
     if (this.tour >= this.nbrTour) {
       if (this.partie.scores.scoreJ1 > this.partie.scores.scoreJ2) {
