@@ -63,11 +63,11 @@ class Manager {
     this.updateScore(this.partie);
     if (this.tour >= this.nbrTour) {
       if (this.partie.j1 > this.partie.j2) {
-        this.pFinalResult.innerText = "Bravo vous avez gagné !";
+        this.pResult.innerText = "Bravo vous avez gagné !";
       } else if (this.partie.j1 === this.partie.j2) {
-        this.pFinalResult.innerText = "Draw!";
+        this.pResult.innerText = "Draw!";
       } else {
-        this.pFinalResult.innerText = "Dommage Vous avez perdu !";
+        this.pResult.innerText = "Dommage Vous avez perdu !";
       }
       this.parties.push(this.partie);
       this.addhistory();
