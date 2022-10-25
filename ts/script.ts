@@ -11,14 +11,7 @@ class Partie {
     this.j1 = choice;
     this.j2 = Math.ceil(Math.random() * 3);
     if (manager.resultat) {
-      manager.resultat.innerHTML = "";
-      manager.pResult.className = "";
-      manager.imgJ1.src = manager.imgs[manager.partie.j1 - 1];
-      manager.imgJ2.src = manager.imgs[manager.partie.j2 - 1];
-      manager.resultat.appendChild(manager.imgJ1);
-      manager.resultat.append(" - ");
-      manager.resultat.appendChild(manager.imgJ2);
-
+      manager.afficherImage();
       if (
         (manager.partie.j1 == 1 && manager.partie.j2 == 3) ||
         (manager.partie.j1 == 2 && manager.partie.j2 == 1) ||
@@ -81,8 +74,18 @@ class Manager {
   }
 
   afficherMessageResultat(classname: string, text: string) {
-    manager.pResult.classList.add(classname);
-    manager.pResult.innerText = text;
+    this.pResult.classList.add(classname);
+    this.pResult.innerText = text;
+  }
+
+  afficherImage() {
+    this.resultat.innerHTML = "";
+    this.pResult.className = "";
+    this.imgJ1.src = this.imgs[this.partie.j1 - 1];
+    this.imgJ2.src = this.imgs[this.partie.j2 - 1];
+    this.resultat.appendChild(this.imgJ1);
+    this.resultat.append(" - ");
+    this.resultat.appendChild(this.imgJ2);
   }
   event() {
     this.tour++;
