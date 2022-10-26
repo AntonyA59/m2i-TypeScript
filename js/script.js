@@ -8,6 +8,7 @@ class Component {
         this.urlEntries = "https://api.publicapis.org/entries";
         this.select = document.getElementById("category");
         this.loadCategories();
+        this.load("all");
     }
     loadCategories() {
         fetch(this.urlCategories)
@@ -48,9 +49,9 @@ class Component {
             }
         })
             .then((items) => {
-            this.entries.splice(0, this.entries.length);
+            if (this.entries.length !== 0)
+                this.entries.splice(0, this.entries.length);
             items.entries.forEach((element) => this.entries.push(element));
-            console.log(this.entries);
             this.refreshView(this.entries);
         });
     }
@@ -65,7 +66,7 @@ class Component {
             let h2Card = document.createElement("h2");
             h2Card.innerHTML = entries[i].API;
             let pDescriptionCard = document.createElement("p");
-            pDescriptionCard.innerHTML = "Descriptions : " + entries[i].Description;
+            pDescriptionCard.innerHTML = entries[i].Description;
             let pAuthCard = document.createElement("p");
             pAuthCard.innerHTML = "Auth : " + entries[i].Auth;
             let pHTTPSCard = document.createElement("p");

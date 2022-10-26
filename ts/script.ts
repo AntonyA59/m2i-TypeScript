@@ -12,6 +12,16 @@ type Entry = {
   Category: string;
 };
 
+type CategoryModel = {
+  count: number;
+  categories: Category[];
+};
+
+type EntryModel = {
+  count: number;
+  entries: Entry[];
+};
+
 class Component {
   categories: Category[] = [];
   entries: Array<Entry> = new Array<Entry>();
@@ -23,6 +33,7 @@ class Component {
 
   constructor() {
     this.loadCategories();
+    this.load("all");
   }
 
   loadCategories() {
@@ -74,9 +85,10 @@ class Component {
         }
       })
       .then((items) => {
-        this.entries.splice(0, this.entries.length);
+        if (this.entries.length !== 0)
+          this.entries.splice(0, this.entries.length);
+
         items.entries.forEach((element: Entry) => this.entries.push(element));
-        console.log(this.entries);
         this.refreshView(this.entries);
       });
   }
@@ -95,7 +107,7 @@ class Component {
       h2Card.innerHTML = entries[i].API;
 
       let pDescriptionCard = document.createElement("p");
-      pDescriptionCard.innerHTML = "Descriptions : " + entries[i].Description;
+      pDescriptionCard.innerHTML = entries[i].Description;
 
       let pAuthCard = document.createElement("p");
       pAuthCard.innerHTML = "Auth : " + entries[i].Auth;
