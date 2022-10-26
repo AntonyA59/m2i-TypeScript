@@ -15,11 +15,10 @@ type Entry = {
 class Component {
   categories: Category[] = [];
   entries: Array<Entry> = new Array<Entry>();
-  container = document.querySelector(".container")!;
+  container = document.querySelector(".container") as Element;
   urlCategories: string = "https://api.publicapis.org/categories";
   urlEntries: string = "https://api.publicapis.org/entries";
-  urlEntriesWithCategory: string =
-    "https://api.publicapis.org/entries?Category=";
+
   select = document.getElementById("category")!;
 
   constructor() {
@@ -28,54 +27,63 @@ class Component {
 
   loadCategories() {
     fetch(this.urlCategories)
-      .then(function (response) {
+      .then((response) => {
         if (response.ok) {
           return response.json();
         }
       })
       .then((items) => {
-        for (let i = 0; i < items.categories.length; i++) {
-          this.categories.push(items.categories[i]);
-          let option = document.createElement("option");
+        items.categories.forEach((element: string) => {
+          this.categories.push({ name: element });
+        });
 
-          option.dataset.name = items.categories[i];
-          option.className = "opt-category";
-          option.innerHTML = items.categories[i];
-          this.select.appendChild(option);
-        }
-
-        let options = document.getElementsByClassName(
-          "opt-category"
-        ) as HTMLCollectionOf<HTMLElement>;
-
-        for (let i = 0; i < options.length; i++) {
-          options[i].addEventListener("click", () =>
-            this.load(options[i].dataset.name!)
-          );
-        }
+        this.createOption(this.categories);
       });
+  }
+
+  createOption(items: Category[]) {
+    for (let i = 0; i < items.length; i++) {
+      let option = document.createElement("option");
+
+      option.dataset.name = items[i].name;
+      option.className = "opt-category";
+      option.innerHTML = items[i].name;
+      this.select.appendChild(option);
+    }
+
+    let options = document.getElementsByClassName(
+      "opt-category"
+    ) as HTMLCollectionOf<HTMLElement>;
+
+    for (let i = 0; i < options.length; i++) {
+      options[i].addEventListener("click", () =>
+        this.load(options[i].dataset.name!)
+      );
+    }
   }
 
   load(filter: string) {
-    let url2 = this.urlEntriesWithCategory + filter;
+    let url = "https://api.publicapis.org/entries?Category=" + filter;
     if (filter === null || filter === "all") {
-      url2 = "https://api.publicapis.org/entries";
+      url = "https://api.publicapis.org/entries";
     }
-    fetch(url2)
-      .then(function (response) {
+    fetch(url)
+      .then((response) => {
         if (response.ok) {
           return response.json();
         }
       })
       .then((items) => {
-        items.entries.forEach((element: any) => this.entries.push(element));
-        this.refreshView(items);
+        this.entries.splice(0, this.entries.length);
+        items.entries.forEach((element: Entry) => this.entries.push(element));
+        console.log(this.entries);
+        this.refreshView(this.entries);
       });
   }
 
-  refreshView(items: any) {
+  refreshView(entries: Entry[]) {
     this.container.innerHTML = "";
-    for (let i = 0; i < items.entries.length; i++) {
+    for (let i = 0; i < entries.length; i++) {
       let content = document.createElement("div");
       content.className = "content";
       this.container.appendChild(content);
@@ -84,17 +92,16 @@ class Component {
       divCard.className = "card";
 
       let h2Card = document.createElement("h2");
-      h2Card.innerHTML = items.entries[i].API;
+      h2Card.innerHTML = entries[i].API;
 
       let pDescriptionCard = document.createElement("p");
-      pDescriptionCard.innerHTML =
-        "Descriptions : " + items.entries[i].Description;
+      pDescriptionCard.innerHTML = "Descriptions : " + entries[i].Description;
 
       let pAuthCard = document.createElement("p");
-      pAuthCard.innerHTML = "Auth : " + items.entries[i].Auth;
+      pAuthCard.innerHTML = "Auth : " + entries[i].Auth;
 
       let pHTTPSCard = document.createElement("p");
-      if (items.entries[i].HTTPS === true) {
+      if (entries[i].HTTPS === true) {
         pHTTPSCard.innerHTML =
           "HTTPS : " + `<i class="fa-solid fa-circle-check green"></i>`;
       } else {
@@ -103,13 +110,13 @@ class Component {
       }
 
       let pCorsCard = document.createElement("p");
-      if (items.entries[i].Cors === "yes") {
+      if (entries[i].Cors === "yes") {
         pCorsCard.innerHTML =
           "Cors : " + ` <i class="fa-solid fa-circle-check green"></i>`;
-      } else if (items.entries[i].Cors === "no") {
+      } else if (entries[i].Cors === "no") {
         pCorsCard.innerHTML =
           "Cors : " + ` <i class="fa-solid fa-circle-xmark red"></i>`;
-      } else if (items.entries[i].Cors === "unknown") {
+      } else if (entries[i].Cors === "unknown") {
         pCorsCard.innerHTML =
           "Cors : " + ` <i class="fa-solid fa-circle-question"></i>`;
       }
@@ -117,13 +124,13 @@ class Component {
       let aLinkCard = document.createElement("a");
       aLinkCard.target = "_blank";
       aLinkCard.className = "btn-link";
-      aLinkCard.href = items.entries[i].Link;
+      aLinkCard.href = entries[i].Link;
       aLinkCard.innerHTML = "Visitez le site";
 
       content.appendChild(divCard);
       divCard.appendChild(h2Card);
       divCard.appendChild(pDescriptionCard);
-      if (items.entries[i].Auth) {
+      if (entries[i].Auth) {
         divCard.appendChild(pAuthCard);
       }
       divCard.appendChild(pHTTPSCard);
@@ -134,4 +141,3 @@ class Component {
 }
 
 let component: Component = new Component();
-component.load("Animals");
